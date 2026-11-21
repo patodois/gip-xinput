@@ -1,0 +1,10 @@
+LIBRARY xinput1_3
+EXPORTS
+    ; Fallout 4 imports 2, 3 and 4 by ordinal. Where 5 to 8 came from is unrecorded: README.md, "Export ordinals".
+    XInputGetState @2
+    XInputSetState @3
+    XInputGetCapabilities @4
+    XInputEnable @5
+    XInputGetDSoundAudioDeviceGuids @6
+    XInputGetBatteryInformation @7
+    XInputGetKeystroke @8

@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  host:
+    name: Rust host (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - run: cargo fmt --check
+      - run: cargo clippy --all-targets --locked -- -D warnings
+      - run: cargo test --locked
+      - name: Installer tests (fake registry, temporary prefix)
+        run: python3 -m unittest discover -s tests -p 'test_install.py' -v
+
+  native:
+    # The C API logic and protocol, built for the host with a test-only POSIX adapter. The Windows
+    # DLL itself needs MinGW and is not built here.
+    name: Native C and socket tests (macOS)
+    runs-on: macos-latest
+    env:
+      GX_SKIP_TIMING: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo build --locked --bin gip-xinput-fake-host
+      - run: make build/protocol-test build/api-test
+      - run: ./build/protocol-test
+      - name: Socket, API and hold-over tests
+        working-directory: tests
+        run: GX_TEST_PORT=26795 python3 -m unittest -v test_transport test_api test_holdover

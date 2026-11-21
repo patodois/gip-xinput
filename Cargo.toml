@@ -1,0 +1,21 @@
+[package]
+name = "gip-xinput-host"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+description = "Local GIP to XInput bridge for Wine on macOS"
+repository = "https://github.com/patodois/gip-xinput"
+readme = "README.md"
+keywords = ["xinput", "wine", "gamepad", "gip", "macos"]
+categories = ["hardware-support", "games"]
+
+[dependencies]
+gip-pad = { git = "https://github.com/patodois/gip-pad", rev = "4817b68" }
+
+[[bin]]
+name = "gip-xinput-host"
+path = "src/main.rs"
+
+[[bin]]
+name = "gip-xinput-fake-host"
+path = "src/bin/fake_host.rs"
