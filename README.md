@@ -1,4 +1,4 @@
-# gip-xinput
+<h1 align="center"><img src="docs/title.png" alt="gip-xinput" width="342"></h1>
 
 A local bridge from a wired GIP controller on macOS to **XInput 1.3 in a 64-bit Windows game running under Wine**. It is intended for the PDP Afterglow Wave (`0e6f:0338`), the original Fallout 4, and Highball's Wine 10 engine on Apple Silicon / Rosetta. Fallout 4 loads `XINPUT1_3.dll` and imports its functions by ordinal.
 
